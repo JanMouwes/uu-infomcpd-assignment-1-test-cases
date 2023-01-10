@@ -1,0 +1,7 @@
+main :: Int
+     = let count :: (Int -> Int -> Int)
+          = recfun count :: (Int -> Int -> Int) agg y = 
+              if (y == 0) 
+                then agg
+                else (count (agg + 1) (y - 1));
+       in count 0 2;

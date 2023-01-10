@@ -1,0 +1,4 @@
+main :: Int
+    = let 
+        hd :: ([Int] -> Int) = (head);
+      in hd (Cons 3 Nil);  -- returns 3

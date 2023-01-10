@@ -1,0 +1,6 @@
+main :: Bool
+     = let  eq :: (Int -> Int -> Bool)
+              = recfun eq :: (Int -> Int -> Bool) x y = x == y;
+            x :: Int = 3;
+            y :: Int = 4;
+       in eq x y;

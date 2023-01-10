@@ -1,0 +1,8 @@
+main :: [Int]
+  = let ones :: [Int] = recfun ones :: [Int] = Cons 1 ones;
+        take :: (Int -> [Int] -> [Int]) 
+          = recfun take :: (Int -> [Int] -> [Int]) n l = 
+              if (n > 0) 
+                then (Cons (head l) (take (n - 1) (tail l)))
+                else Nil;
+     in take 3 ones;

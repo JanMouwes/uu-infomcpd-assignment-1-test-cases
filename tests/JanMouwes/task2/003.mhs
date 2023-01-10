@@ -1,0 +1,6 @@
+main :: Int
+    = let 
+        y :: Int = 2 ;
+      in let 
+        inc :: (Int -> Int) = (+) y;
+      in inc 1;  -- returns 3

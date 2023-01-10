@@ -1,0 +1,6 @@
+main :: Int
+     = let sum :: (Int -> Int -> Int -> Int) x y z = x + y + z;
+          x :: Int = 1;
+          y :: Int = 2;
+          z :: Int = 3;
+       in sum x y z;

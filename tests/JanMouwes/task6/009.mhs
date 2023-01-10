@@ -1,0 +1,3 @@
+main :: Bool
+  = let ones :: [Int] = recfun ones :: [Int] = Cons 1 ones;
+     in null (tail (tail (tail ones)));

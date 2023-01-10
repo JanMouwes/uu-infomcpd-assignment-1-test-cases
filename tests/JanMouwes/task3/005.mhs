@@ -1,0 +1,7 @@
+main :: Int
+     = let pow :: (Int -> Int -> Int)
+          = recfun pow :: (Int -> Int -> Int) x y = 
+              if (y == 0) 
+                then 1
+                else x * (pow x (y - 1));
+       in pow 2 1;

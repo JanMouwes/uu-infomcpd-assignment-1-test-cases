@@ -1,0 +1,4 @@
+main :: Int
+     = let sum :: (Int -> Int -> Int -> Int)
+              = recfun sum :: (Int -> Int -> Int -> Int) x y z = x + y + z;
+       in sum 1 2 3;
