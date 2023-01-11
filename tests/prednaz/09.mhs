@@ -1,0 +1,7 @@
+main :: Int =
+  (recfun f :: (Int -> Int) a =
+    (recfun g :: (Int -> Int -> Int) b a = b)
+      (a + 0)
+      a
+  )
+  0;
