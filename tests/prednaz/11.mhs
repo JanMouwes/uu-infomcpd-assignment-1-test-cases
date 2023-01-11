@@ -1,0 +1,5 @@
+main :: Int =
+  let
+    consZero :: ([Int] -> [Int]) = Cons 0;
+    zeros :: [Int] = (recfun z :: [Int] = consZero z);
+  in head (tail zeros);

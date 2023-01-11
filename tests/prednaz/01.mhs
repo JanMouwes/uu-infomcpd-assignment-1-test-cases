@@ -1,0 +1,5 @@
+main :: Int =
+  let
+    a :: (Int -> Int) b = b;
+    c :: Int = a 0;
+  in c;

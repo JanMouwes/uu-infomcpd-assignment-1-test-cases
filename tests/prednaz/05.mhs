@@ -1,0 +1,5 @@
+main :: Int =
+  let
+    repeat :: (Int -> [Int]) a =
+      (recfun as :: [Int] = Cons a as);
+  in head (tail (repeat 0));
