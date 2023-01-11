@@ -1,0 +1,28 @@
+main :: [Int] =                                                                         -- task4
+
+  let plus1 :: Int -> Int = (+) 1;                                                      -- task2
+
+      genlist :: [Int] = recfun genlist :: [Int]
+        = Cons (plus1 0) (Cons (plus1 1) (Cons (plus1 2) genlist));                     -- task6
+
+      not :: Bool -> Bool b = if b then False else True;                                -- task5
+
+      append :: [Int] -> [Int] -> [Int] = recfun append :: [Int] -> [Int] -> [Int] l r  -- task3
+        = if not (null l) then Cons (head l) (append (tail l) r) else r;
+
+      reverse :: [Int] -> [Int] = recfun reverse :: [Int] -> [Int] a
+        = if not (null a) then append (reverse (tail a)) (Cons (head a) Nil) else Nil;
+
+      flip :: (Int -> [Int] -> [Int]) -> [Int] -> Int -> [Int] f l r = f r l;
+      take :: Int -> [Int] -> [Int] = recfun take :: Int -> [Int] -> [Int] x f
+        = if x > 0 then Cons (head f) (take (x - 1) (tail f)) else Nil;
+
+      length :: [Int] -> Int = recfun length :: [Int] -> Int a
+        = if not (null a) then 1 + length (tail a) else 0;
+
+  in let takeGenlist :: Int -> [Int] = flip take genlist;
+          list :: Int -> [Int] n = let l :: [Int] = takeGenlist n;
+                                   in if length l == n then l else tail Nil;
+          comb :: [Int] = append (list 5) (list 10);
+
+          in reverse comb;
