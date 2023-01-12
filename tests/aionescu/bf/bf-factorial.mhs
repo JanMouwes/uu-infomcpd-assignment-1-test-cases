@@ -1,0 +1,74 @@
+-- Loosely based on https://github.com/aionescu/dynasty/blob/main/examples/bf/BF.dy
+
+main :: [Int] =
+  let
+    nop :: (Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]
+      k = k;
+
+    incr :: (Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]
+      k crr = k (if crr == 255 then 0 else crr + 1);
+
+    decr :: (Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]
+      k crr = k (if crr == 0 then 255 else crr - 1);
+
+    movL :: (Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]
+      k crr left right = k (head left) (tail left) (Cons crr right);
+
+    movR :: (Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]
+      k crr left right = k (head right) (Cons crr left) (tail right);
+
+    read :: (Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]
+      k crr left right in' = k (head in') left right (tail in');
+
+    write :: (Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]
+      k crr left right in' out = k crr left right in' (Cons crr out);
+
+    loop :: ((Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> (Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]
+      op k = recfun go :: Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]
+        crr = if crr == 0 then k crr else op go crr;
+
+  co :: ((Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> ((Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> (Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]
+    f g x = f (g x);
+
+  parse :: Bool -> ((Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> [Int] -> (((Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> [Int] -> [Int]) -> [Int]
+    = recfun go :: Bool -> ((Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> [Int] -> (((Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> [Int] -> [Int]) -> [Int]
+      l o ops k  =
+        if null ops then
+          (if l then tail Nil else k o Nil) -- error "Unmatched ["
+        else if head ops == 43 then
+          go l (co o incr) (tail ops) k
+        else if head ops == 45 then
+          go l (co o decr) (tail ops) k
+        else if head ops == 60 then
+          go l (co o movL) (tail ops) k
+        else if head ops == 62 then
+          go l (co o movR) (tail ops) k
+        else if head ops == 44 then
+          go l (co o read) (tail ops) k
+        else if head ops == 46 then
+          go l (co o write) (tail ops) k
+        else if head ops == 91 then
+          go True nop (tail ops) (recfun _ :: ((Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> [Int] -> [Int]
+            o' ops' = go l (co o (loop o')) ops' k)
+        else if head ops == 93 then
+          (if l then k o (tail ops) else tail Nil) -- error "Unmatched ]"
+        else
+          tail Nil; -- error "Unexpected op"
+
+  zeros :: [Int] = recfun zeros :: [Int] = Cons 0 zeros;
+
+  out :: Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]
+    _ _ _ _ out = out;
+
+  eval :: [Int] -> ((Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> [Int]
+    in' o = o out 0 zeros zeros in' Nil;
+
+  reverse :: [Int] -> [Int] =
+    let go :: [Int] -> [Int] -> [Int] = recfun go :: [Int] -> [Int] -> [Int] acc l =
+      if null l then acc else go (Cons (head l) acc) (tail l);
+    in go Nil;
+
+  program :: [Int] = Cons 44 (Cons 62 (Cons 62 (Cons 62 (Cons 62 (Cons 43 (Cons 60 (Cons 60 (Cons 60 (Cons 60 (Cons 91 (Cons 45 (Cons 62 (Cons 43 (Cons 91 (Cons 45 (Cons 62 (Cons 43 (Cons 62 (Cons 43 (Cons 60 (Cons 60 (Cons 93 (Cons 62 (Cons 91 (Cons 45 (Cons 60 (Cons 43 (Cons 62 (Cons 93 (Cons 62 (Cons 45 (Cons 91 (Cons 45 (Cons 62 (Cons 91 (Cons 45 (Cons 62 (Cons 43 (Cons 62 (Cons 43 (Cons 60 (Cons 60 (Cons 93 (Cons 62 (Cons 91 (Cons 45 (Cons 60 (Cons 43 (Cons 62 (Cons 93 (Cons 60 (Cons 60 (Cons 93 (Cons 62 (Cons 62 (Cons 62 (Cons 91 (Cons 45 (Cons 60 (Cons 60 (Cons 43 (Cons 62 (Cons 62 (Cons 93 (Cons 60 (Cons 60 (Cons 60 (Cons 60 (Cons 60 (Cons 60 (Cons 93 (Cons 62 (Cons 62 (Cons 62 (Cons 62 (Cons 46 Nil))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))));
+
+  in parse False nop program (recfun _ :: ((Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> Int -> [Int] -> [Int] -> [Int] -> [Int] -> [Int]) -> [Int] -> [Int]
+    o _ = reverse (eval (Cons 5 Nil) o));
