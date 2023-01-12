@@ -1,0 +1,3 @@
+main :: [Int]
+  = let onetwo :: [Int] = recfun onetwo :: [Int] = Cons 1 (Cons 2 onetwo);
+     in Cons (head onetwo) (Cons (head (tail onetwo)) Nil);

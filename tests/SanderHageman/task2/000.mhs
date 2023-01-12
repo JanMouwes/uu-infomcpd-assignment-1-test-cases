@@ -1,0 +1,2 @@
+main :: Int = let inc :: (Int -> Int) = (+) 1;
+              in inc 2; -- returns 3
